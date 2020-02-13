@@ -4,11 +4,11 @@ using System.Text;
 
 namespace BasicCSharp
 {
-    class Program
+    /*class Program
     {
-        static void Main(string[] args)
+        *//*static void Main(string[] args)
         {
             TextRPG1.My_Main();
-        }
-    }
+        }*//*
+    }*/
 }
