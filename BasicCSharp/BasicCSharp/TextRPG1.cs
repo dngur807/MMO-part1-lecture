@@ -118,23 +118,67 @@ namespace BasicCSharp
             }
         }
 
-
-        static void EnterField()
+        static void Fight (ref Player player , ref Monster monster)
         {
-            Console.WriteLine("필드에 접속했습니다.");
+            while (true)
+            {
+                // 플레이어가 몬스터 공격
+                monster.hp -= player.attack;
+                if (monster.hp <= 0)
+                {
+                    Console.WriteLine("승리했습니다!");
+                    Console.WriteLine($"남은 체력 : {player.hp}");
+                    break;
+                }
 
-            // 몬스터 생성
-            Monster monster;
-            CreateRandomMonster(out monster);
-
-            // 전투모드 모
-            Console.WriteLine("[1] 전투 모드 돌입");
-            Console.WriteLine("[2] 일정확률로 마을로 도망");
-
-
+                // 몬스터 반격
+                player.hp -= monster.attack;
+                if (player.hp <= 0 )
+                {
+                    Console.WriteLine("패배했습니다!");
+                    break;
+                }
+            }
         }
 
-        static void EnterGame()
+        static void EnterField(ref Player player)
+        {
+            while (true)
+            {
+                Console.WriteLine("필드에 접속했습니다.");
+
+                // 몬스터 생성
+                Monster monster;
+                CreateRandomMonster(out monster);
+
+                // 전투모드 모
+                Console.WriteLine("[1] 전투 모드 돌입");
+                Console.WriteLine("[2] 일정확률로 마을로 도망");
+
+                string input = Console.ReadLine();
+
+                if (input == "1")
+                {
+                   Fight(ref player , ref monster);
+                }
+                else if (input == "2")
+                {
+                    // 일정확률로 마을로 돌아옴
+                    // 33%
+                    Random rand = new Random();
+                    int randVal = rand.Next(0, 101);// 0 에서 100사이 숫자 뽑아옴
+                    if (randVal <= 33)
+                    {
+                        Console.WriteLine("도망치는데 성공했습니다.");
+                        break;
+                    }
+
+                   
+                }
+            }
+        }
+
+        static void EnterGame(ref Player player)
         {
             Console.WriteLine("마을에 접속했습니다!");
             Console.WriteLine("[1] 필드로 간다");
@@ -146,7 +190,7 @@ namespace BasicCSharp
                 switch (input)
                 {
                     case "1":
-                        EnterField();
+                        EnterField(ref player);
                         return;
                     case "2":
                         return; // 함수에 대한 리턴문
@@ -171,18 +215,18 @@ namespace BasicCSharp
 
                     // 캐릭터 생성
                     Player player;
-
                     CreatePlayer(choice, out player);
+                    //Console.WriteLine($"HP{player.hp} Attack{player.attack}");
+                    EnterGame(ref player);
 
-                    Console.WriteLine($"HP{player.hp} Attack{player.attack}");
-
-
-                    // CreatePlayer()
-                    EnterGame();
-
-                    // 필드로 가서 몬스터랑 싸운다.
                 }
             }
         }
+
+
+        // 절차(procedure) 지향 => 함수를 기반으로 뭔가 만들 겠다는 것이다.
+        // 이전에 만든 텍스트 RPG 가 그 예이다.
+
+
     }
 }
